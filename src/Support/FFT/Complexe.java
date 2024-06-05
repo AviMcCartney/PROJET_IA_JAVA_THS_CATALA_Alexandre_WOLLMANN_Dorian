@@ -1,4 +1,3 @@
-package Support.FFT;
 
 public interface Complexe
 {

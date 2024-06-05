@@ -1,4 +1,3 @@
-package Support.FFT;
 
 class FFTCplx
 {
@@ -38,12 +37,10 @@ class FFTCplx
 			{
 				final ComplexePolaire expo = new ComplexePolaire(1., -2.*Math.PI*k/signal.length);
 				final Complexe temp = P0[k];
-				System.out.println("P0[k] = "+P0[k])
 				trSignal[k] = temp.plus(expo.fois(P1[k]));
 				trSignal[k+signal.length/2] = temp.moins(expo.fois(P1[k]));
 			}
 		}
-		System.ou.println("")
 		return trSignal;
 	}
 

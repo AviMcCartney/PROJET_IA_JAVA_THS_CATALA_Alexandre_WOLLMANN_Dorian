@@ -1,4 +1,4 @@
-package Support.FFT;
+
 public class ComplexePolaire implements Complexe
 {
 	private double mod;

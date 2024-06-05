@@ -1,4 +1,3 @@
-package Support.FFT;
 
 public class ComplexeCartesien implements Complexe
 {
