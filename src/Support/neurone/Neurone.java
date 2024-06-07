@@ -1,4 +1,3 @@
-package Support.neurone;
 
 public abstract class Neurone implements iNeurone
 {
@@ -90,15 +89,23 @@ public abstract class Neurone implements iNeurone
 				metAJour(entree);
 				
 				// On regarde la différence avec le résultat attendu
-				
-				// Si l'erreur absolue dépasse la tolérance autorisée 
-					// On met à jour les poids synaptiques
-					
+				final float difference = resultats[i] - sortie();
+                
+                // Si l'erreur absolue dépasse la tolérance autorisée 
+                if (Math.abs(difference) > ToleranceSortie)
+                {
+                    // On met à jour les poids synaptiques
+                    for (int j = 0; j < synapses.length; ++j)
+                    {
+                        synapses[j] += eta * difference * entree[j];
+                    }   
 					// On met aussi à jour le biais 
-					
+					biais += eta * difference; 
+
 					// Et on mémorise que l'apprentissage n'est pas finalisé
 					apprentissageFini = false;
 					compteurEchecs += 1;
+				}
 			}
 		}
 		while (!apprentissageFini);

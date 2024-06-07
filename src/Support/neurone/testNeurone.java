@@ -1,5 +1,3 @@
-package Support.neurone;
-
 public class testNeurone
 {
 	public static void main(String[] args)
@@ -15,7 +13,18 @@ public class testNeurone
 		//final iNeurone n = new NeuroneSigmoide(entrees[0].length);
 		//final iNeurone n = new NeuroneReLU(entrees[0].length);
 		
-		System.out.println("Apprentissage…");
+		System.out.println("Sortie avant apprentissage pour les entrées correspondantes : ");
+		for (int i = 0; i < entrees.length; ++i)
+		{
+			// Pour une entrée donnée
+			final float[] entree = entrees[i];
+			// On met à jour la sortie du neurone
+			n.metAJour(entree);
+			// On affiche cette sortie
+			System.out.println("Entree "+i+" : " + "{" + entrees[i][0] + " , " + entrees[i][1] + "} " + "Sortie : " +n.sortie());
+		}
+
+		System.out.println("\nApprentissage…");
 		// On lance l'apprentissage de la fonction ET sur ce neurone
 		System.out.println("Nombre de tours : "+n.apprentissage(entrees, resultats));
 		
@@ -34,6 +43,7 @@ public class testNeurone
 		System.out.println(vueNeurone.biais());
 		
 		// On affiche chaque cas appris
+		System.out.println("\nSortie après apprentissage pour les entrées correspondantes : ");
 		for (int i = 0; i < entrees.length; ++i)
 		{
 			// Pour une entrée donnée
@@ -41,7 +51,7 @@ public class testNeurone
 			// On met à jour la sortie du neurone
 			n.metAJour(entree);
 			// On affiche cette sortie
-			System.out.println("Entree "+i+" : "+n.sortie());
+			System.out.println("Entree "+i+" : " + "{" + entrees[i][0] + " , " + entrees[i][1] + "} " + "Sortie : " +n.sortie());
 		}
 	}
 }

@@ -1,4 +1,3 @@
-package Support.neurone;
 
 public interface iNeurone
 {
