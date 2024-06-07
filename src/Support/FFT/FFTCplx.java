@@ -1,5 +1,4 @@
 package Support.FFT;
-
 class FFTCplx
 {
 	public final static int TailleFFTtest = 16;
