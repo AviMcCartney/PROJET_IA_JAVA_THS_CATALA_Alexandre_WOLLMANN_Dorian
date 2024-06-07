@@ -27,6 +27,7 @@ public abstract class Neurone implements iNeurone
 	// mais doit être redéfinie dans les classes filles
 	protected abstract float activation(final float valeur);
 
+	public float ToleranceSortie(){return ToleranceSortie;}
 	// Constructeur d'un neurone
 	public Neurone(final int nbEntrees)
 	{
@@ -73,13 +74,11 @@ public abstract class Neurone implements iNeurone
 		// les résultats attendus (=> l'apprentissage est alors fini), ou s'il
 		// y a au moins un cas qui ne correspond pas (=> apprentissage pas fini)
 		boolean apprentissageFini = true;
-
 		// On boucle jusqu'à ce que l'apprentissage soit fini
 		do
 		{
 			// On part du principe que tout va bien se passer => drapeau à vrai
 			apprentissageFini = true;
-
 			// Pour chacune des entrées fournies
 			for (int i = 0; i < entrees.length; ++i)
 			{
