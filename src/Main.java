@@ -10,9 +10,11 @@ public class Main
 {
     public static void main(String[] args) {
 
-        // Création z objets Son pour les fichiers sonores
+        // Création objets Son pour les fichiers sonores
         Son sonSinus = new Son("Sources_sonores/Sinusoide.wav");
-        Son sonSinusHarmonique = new Son("Sources_sonores/Sinusoide3Harmoniques.wav");
+        Son sonSinusH = new Son("Sources_sonores/Sinusoide3Harmoniques.wav");
+        Son sonSinusCarre = new Son("Sources_sonores/Carre.wav");
+
 
         // Affichage des informations sur les fichiers sonores
         System.out.println("Lecture du fichier WAV Sources_sonores/Sinus.wav");
@@ -22,7 +24,7 @@ public class Main
         // Extraction de blocs de données de taille 512 échantillons des fichiers sonores
         float [][] DonneesR = new float[10][512];
         for(int i = 0; i < 5; i++){
-            DonneesR[i] = sonSinusHarmonique.bloc_deTaille(i+1,512);
+            DonneesR[i] = sonSinusCarre.bloc_deTaille(i+1,512);
             DonneesR[i+5] = sonSinus.bloc_deTaille(i+1, 512);
         }
 
@@ -106,6 +108,5 @@ public class Main
             Sinus.metAJour(entree);
             System.out.println("Sortie neurone bruitée"+i+" : "+ Sinus.sortie());
         }
-        System.out.println("Hello le monde!");
     }
 }
