@@ -8,25 +8,6 @@ import Support.neurone.Neurone;
 
 public class Main
 {
-    // Fonction pour normaliser les modules des valeurs complexes
-    public static float[] normalisation(Complexe[] resultat){
-        float[] tabModules = new float[resultat.length];
-        float maxModule = 0;
-        // Calculer les modules des valeurs complexes et trouver le module maximum
-        for (int i = 0; i < resultat.length; ++i) {
-            tabModules[i] = (float) resultat[i].mod();
-            if (tabModules[i] > maxModule) {
-                maxModule = tabModules[i];
-            }
-        }
-        float[] tabModulesNormalises = new float[resultat.length];
-        // Normaliser chaque module par le module maximum
-        for (int i = 0; i < resultat.length; ++i) {
-            tabModulesNormalises[i] = tabModules[i] / maxModule;
-        }
-        return tabModulesNormalises;
-    }
-
     public static void main(String[] args) {
 
         // Création z objets Son pour les fichiers sonores
@@ -67,36 +48,6 @@ public class Main
                 Modules[i][j] = (float)Signaux[i][j].mod();
             }
         }
-
-        // Calcul de la longueur totale des signaux pour les sinus et les sinus harmoniques
-        int length1 = 0;
-        int length2 = 0;
-        for(int i = 0; i < 5; i++){
-            length1 += Signaux[i].length;
-            length2 += Signaux[i+5].length;
-        }
-
-        // Combinaison des signaux en un seul tableau pour les sinus harmoniques
-        Complexe[] SinH =  new Complexe[length1];
-        int indice = 0;
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j < Signaux[i].length; j++){
-                SinH[indice++] = Signaux[i][j];
-            }
-        }
-
-        // Combinaison des signaux en un seul tableau pour les sinus
-        Complexe[] Sin =  new Complexe[length2];
-        indice = 0;
-        for(int i = 5; i < 10; i++){
-            for(int j = 0; j < Signaux[i].length; j++){
-                Sin[indice++] = Signaux[i][j];
-            }
-        }
-
-        // Normalisation des modules des signaux
-        float[] modSin = normalisation(Sin);
-        float[] modSinH = normalisation(SinH);
 
         // Préparation des entrées pour le neurone
         final float[][] entrees = new float[10][512];
@@ -155,7 +106,6 @@ public class Main
             Sinus.metAJour(entree);
             System.out.println("Sortie neurone bruitée"+i+" : "+ Sinus.sortie());
         }
-=======
         System.out.println("Hello le monde!");
     }
 }
