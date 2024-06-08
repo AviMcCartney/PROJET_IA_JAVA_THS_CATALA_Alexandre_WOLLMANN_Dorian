@@ -115,7 +115,7 @@ public class Main
         }
 
         // Résultats attendus pour chaque bloc
-        final float[] resultats = {0, 1, 1, 1, 1, 0, 0, 0, 0, 1};
+        final float[] resultats = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
 
         // Création du neurone et apprentissage
         final iNeurone Sinus = new NeuroneHeaviside(entrees[0].length);
@@ -136,15 +136,15 @@ public class Main
         {
             final float[] entree = entrees[i];
             Sinus.metAJour(entree);
-            System.out.println("Entree "+i+" : "+Sinus.sortie());
+            System.out.println("Sortie neurone"+i+" : "+Sinus.sortie());
         }
 
         // Ajout de bruit aux entrées pour tester la robustesse du neurone
         float[][] bruit = new float[10][512];
-        final float Perturbation = 50000.0f;
+        final float Perturbation = 1000f;
         for(int i = 0; i < 10; i++){
             for(int j=0 ; j < 512 ; j++){
-                bruit[0][j] = Modules[i][j] + (float)Math.random()*Perturbation;
+                bruit[i][j] = Modules[i][j] + (float)Math.random()*Perturbation;
             }
         }
 
@@ -153,7 +153,7 @@ public class Main
         {
             final float[] entree = bruit[i];
             Sinus.metAJour(entree);
-            System.out.println("Entree avec les SinusHarmoniques "+i+" : "+ Sinus.sortie());
+            System.out.println("Sortie neurone bruitée"+i+" : "+ Sinus.sortie());
         }
     }
 }
