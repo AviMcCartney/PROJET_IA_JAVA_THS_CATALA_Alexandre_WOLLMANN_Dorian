@@ -7,4 +7,6 @@ public class NeuroneHeaviside extends Neurone
 	
 	// Constructeur
 	public NeuroneHeaviside(final int nbEntrees) {super(nbEntrees);}
+
+
 }

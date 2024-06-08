@@ -12,4 +12,6 @@ public interface iNeurone
 	// Fonction d'apprentissage permettant de mettre à jour les valeurs des 
 	// poids synaptiques ainsi que du biais en fonction de données supervisées
 	public int apprentissage(final float[][] entrees, final float[] resultats);
+	public float ToleranceSortie();
+
 }
