@@ -27,6 +27,8 @@ public abstract class Neurone implements iNeurone
 	// activation est protected car elle n'a pas à être vue de l'extérieur,
 	// mais doit être redéfinie dans les classes filles
 	protected abstract float activation(final float valeur);
+	public float ToleranceSortie(){return ToleranceSortie;}
+
 
 	// Constructeur d'un neurone
 	public Neurone(final int nbEntrees)

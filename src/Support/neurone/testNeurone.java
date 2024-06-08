@@ -87,5 +87,51 @@ public class testNeurone
 			System.out.println("----------APPRENTISSAGE OU ----------------");
 			System.out.println("Entree "+i+" : " + "{" + entrees[i][0] + " , " + entrees[i][1] + "} " + "Sortie : " +Heaviside_OU.sortie());
 		}
+		final float[] resultats = {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		 //Boucle Apprentissage avec BRUIT
+		int compteurEchecs = 0;
+		int compteurEssai = 0;
+		final float[][] entrees2 = {{0.3f, 0.1f},{0.15f, 0.9f},{0.7f, 0.2f},{1.2f, 1.1f}};
+		for(int k = 0; k < 1000; k++){
+			final iNeurone n = new NeuroneHeaviside(entrees[0].length);
+			n.apprentissage(entrees, resultats);
+			for(int i = 0; i < 4; i++){
+				compteurEssai++;
+				n.metAJour(entrees2[i]);
+				if(Math.abs(resultats[i] - n.sortie()) > n.ToleranceSortie()){
+					compteurEchecs++;
+				}
+//                System.out.println("Entrées : {" + entrees2[i][0] + ", " + entrees2[i][1] + "} -- Sortie : " + n.sortie());
+			}
+		}
+		System.out.println("Nombre d'échec : " + compteurEchecs + " Nombre d'essai : " + compteurEssai);
+
+		/* MOYENNE D'ECHEC
+		float moyenne = 0;
+		int nb_tour = 0;
+		System.out.println("\nApprentissage…");
+		for(int k = 0; k < 10; k++){
+			final iNeurone n = new NeuroneHeaviside(entrees[0].length);
+			Neurone vueNeurone = (Neurone)n;
+
+			System.out.print("\n\nSynapses Avant : ");
+			for (final float f : vueNeurone.synapses())
+				System.out.print(f+" ");
+			System.out.print("\nBiais Avant: ");
+			System.out.println(vueNeurone.biais());
+
+
+			nb_tour = n.apprentissage(entrees, resultats);
+			moyenne += nb_tour;
+
+			vueNeurone = (Neurone)n;
+			System.out.print("Synapses Après: ");
+			for (final float f : vueNeurone.synapses())
+				System.out.print(f+" ");
+			System.out.print("\nBiais Après: ");
+			System.out.println(vueNeurone.biais());
+		}
+		moyenne = moyenne/1000;
+		System.out.println("Moyenne des tours d'apprentissage : "+moyenne);*/
 	}
 }
