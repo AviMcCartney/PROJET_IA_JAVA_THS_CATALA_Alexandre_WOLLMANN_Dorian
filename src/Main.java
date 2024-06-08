@@ -29,7 +29,7 @@ public class Main
 
     public static void main(String[] args) {
 
-        // Création des objets Son pour les fichiers sonores
+        // Création z objets Son pour les fichiers sonores
         Son sonSinus = new Son("Sources_sonores/Sinusoide.wav");
         Son sonSinusHarmonique = new Son("Sources_sonores/Sinusoide3Harmoniques.wav");
 
@@ -155,5 +155,7 @@ public class Main
             Sinus.metAJour(entree);
             System.out.println("Entree avec les SinusHarmoniques "+i+" : "+ Sinus.sortie());
         }
+=======
+        System.out.println("Hello le monde!");
     }
 }
