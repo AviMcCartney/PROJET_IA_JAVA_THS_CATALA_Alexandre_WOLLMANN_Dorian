@@ -8,19 +8,19 @@ import Support.neurone.NeuroneHeaviside;
 
 public class Main{
 
-    public static float[] Normalisation(Complexe[] tab){
-        float[] modules = new float[tab.length];
-        float max = 0;
-        for(int i = 0; i < tab.length; i++){
-            modules[i] = (float) tab[i].mod();
-            max = (modules[i] > max ? modules[i] : max);
-        }
-
-        for (int i = 0; i < tab.length; i++)
-            modules[i] /= max;
-
-        return modules;
-    }
+//    public static float[] Normalisation(Complexe[] tab){
+//        float[] modules = new float[tab.length];
+//        float max = 0;
+//        for(int i = 0; i < tab.length; i++){
+//            modules[i] = (float) tab[i].mod();
+//            max = (modules[i] > max ? modules[i] : max);
+//        }
+//
+//        for (int i = 0; i < tab.length; i++)
+//            modules[i] /= max;
+//
+//        return modules;
+//    }
 
 
     public static void main(String[] args){
@@ -66,7 +66,7 @@ public class Main{
         float[][] modules = new float[30][512];
         for(int i = 0; i < 30; i++){
             for(int j = 0; j < 512; j++){
-                modules[i] = Normalisation(Signaux[i]);
+                modules[i][j] = (float)(Signaux[i][j].mod());
             }
         }
 
@@ -80,21 +80,19 @@ public class Main{
             }
         }
 
-
-        // for(int i = 0; i < 30; i++){
-        //     for(int j=0 ; j < 512; j++){
-        //         System.out.println("Entree["+i+"]["+j+"]: "+ entrees1[i][j]);
-        //     }
-        // }
-
-
-        final float[] resultatsSin = {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // final float[] resultatsSin = {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         // final float[] resultatsSin2 = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         // final float[] resultatsSinH = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         // final float[] resultatsCombinaison = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        final float[] resultatsCarre = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
-        final float[] resultatsBruit = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
+        // final float[] resultatsCarre = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
+        // final float[] resultatsBruit = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
         //final float[][] resultats = {resultatsSin, resultatsSin2, resultatsSinH, resultatsCombinaison, resultatsCarre, resultatsBruit};
+        // final float[] resultatsSin2 = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // final float[] resultatsSinH = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // final float[] resultatsCombinaison = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        final float[] resultatsSin = {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        final float[] resultatsCarre = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
+        final float[] resultatsBruit = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
         final float[][] resultats = {resultatsSin, resultatsCarre, resultatsBruit};
 
         final iNeurone sinus = new NeuroneHeaviside(entrees1[0].length);
