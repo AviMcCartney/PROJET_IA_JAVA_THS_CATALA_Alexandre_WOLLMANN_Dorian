@@ -82,7 +82,6 @@ public abstract class Neurone implements iNeurone
 		{
 			// On part du principe que tout va bien se passer => drapeau à vrai
 			apprentissageFini = true;
-
 			// Pour chacune des entrées fournies
 			for (int i = 0; i < entrees.length; ++i)
 			{
