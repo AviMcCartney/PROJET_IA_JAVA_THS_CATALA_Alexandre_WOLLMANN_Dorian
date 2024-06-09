@@ -3,110 +3,152 @@ import Support.FFT.ComplexeCartesien;
 import Support.FFT.FFTCplx;
 import Support.Son.Son;
 import Support.neurone.iNeurone;
-import Support.neurone.NeuroneHeaviside;
 import Support.neurone.Neurone;
+import Support.neurone.NeuroneHeaviside;
 
-public class Main
-{
-    public static void main(String[] args) {
+public class Main{
 
-        // Création objets Son pour les fichiers sonores
+    public static float[] Normalisation(Complexe[] tab){
+        float[] modules = new float[tab.length];
+        float max = 0;
+        for(int i = 0; i < tab.length; i++){
+            modules[i] = (float) tab[i].mod();
+            max = (modules[i] > max ? modules[i] : max);
+        }
+
+        for (int i = 0; i < tab.length; i++)
+            modules[i] /= max;
+
+        return modules;
+    }
+
+
+    public static void main(String[] args){
         Son sonSinus = new Son("Sources_sonores/Sinusoide.wav");
-        Son sonSinusH = new Son("Sources_sonores/Sinusoide3Harmoniques.wav");
-        Son sonSinusCarre = new Son("Sources_sonores/Carre.wav");
+        Son sonBruit = new Son("Sources_sonores/Bruit.wav");
+        Son sonCarre = new Son("Sources_sonores/Carre.wav");
 
+        String[] ordre = {"Sinusoide", "Carre", "Bruit"};
 
-        // Affichage des informations sur les fichiers sonores
-        System.out.println("Lecture du fichier WAV Sources_sonores/Sinus.wav");
+        System.out.println("Lecture des fichiers WAV...");
         System.out.println("Fichier Sources_sonores/Sinus.wav : "+sonSinus.donnees().length+" échantillons à "+sonSinus.frequence()+"Hz");
-        System.out.println("Bloc 1 : "+sonSinus.bloc_deTaille(1, 512).length+" échantillons à "+sonSinus.frequence()+"Hz");
+        System.out.println("Fichier Sources_sonores/Carre.wav : "+sonCarre.donnees().length+" échantillons à "+sonCarre.frequence()+"Hz");
+        System.out.println("Fichier Sources_sonores/Bruit.wav : "+sonBruit.donnees().length+" échantillons à "+sonBruit.frequence()+"Hz");
 
-        // Extraction de blocs de données de taille 512 échantillons des fichiers sonores
-        float [][] DonneesR = new float[10][512];
+
+        float [][] donneesR = new float[30][512];
         for(int i = 0; i < 5; i++){
-            DonneesR[i] = sonSinusCarre.bloc_deTaille(i+1,512);
-            DonneesR[i+5] = sonSinus.bloc_deTaille(i+1, 512);
+            donneesR[i] = sonSinus.bloc_deTaille(i+1,512);
+            donneesR[i+5] = sonCarre.bloc_deTaille(i+1, 512);
+            donneesR[i+10] = sonBruit.bloc_deTaille(i+1, 512);
+
+            donneesR[i+15] = sonSinus.bloc_deTaille(i+5,512);
+            donneesR[i+20] = sonCarre.bloc_deTaille(i+5, 512);
+            donneesR[i+25] = sonBruit.bloc_deTaille(i+5, 512);
         }
 
-        // Conversion des blocs de données réelles en tableaux de complexes pour utiliser la FFT
-        Complexe[][] DonneesC = new Complexe[10][512];
-        for(int i = 0; i < 10; i++){
-            DonneesC[i] = new Complexe[DonneesR[i].length];
+
+        Complexe[][] donneesC = new Complexe[30][512];
+        for(int i = 0; i < 30; i++){
+            donneesC[i] = new Complexe[donneesR[i].length];
             for(int j = 0; j < 512; j++){
-                DonneesC[i][j] = new ComplexeCartesien(DonneesR[i][j],0);
+                donneesC[i][j] = new ComplexeCartesien(donneesR[i][j],0);
             }
         }
 
-        // Application de la FFT sur chaque bloc de données complexes
-        Complexe[][] Signaux = new Complexe[10][512];
-        for(int i = 0; i < 10; i++){
-            Signaux[i] = FFTCplx.appliqueSur(DonneesC[i]);
+        Complexe[][] Signaux = new Complexe[30][512];
+        for(int i = 0; i < 30; i++){
+            Signaux[i] = FFTCplx.appliqueSur(donneesC[i]);
         }
 
-        // Extraction des modules des valeurs complexes résultantes de la FFT
-        float[][] Modules = new float[10][512];
-        for(int i = 0; i < 10; i++){
+
+
+        float[][] modules = new float[30][512];
+        for(int i = 0; i < 30; i++){
             for(int j = 0; j < 512; j++){
-                Modules[i][j] = (float)Signaux[i][j].mod();
+                modules[i] = Normalisation(Signaux[i]);
             }
         }
 
-        // Préparation des entrées pour le neurone
-        final float[][] entrees = new float[10][512];
-        for(int i = 0; i < 10; i++) {
-            for (int j = 0; j < 512; j++) {
-                entrees[i][j] = Modules[i][j];
-            }
 
-        }
-
-        // Affichage des entrées
-        for(int i = 0; i < 10; i++){
-            for(int j=0 ; j < 512; j++){
-                System.out.println("Entree["+i+"]["+j+"]: "+ entrees[i][j]);
+        final float[][] entrees1 = new float[15][512];
+        final float[][] entrees2 = new float[15][512];
+        for(int i = 0; i < 15; i++){
+            for (int j = 0; j < 512; j++){
+                entrees1[i][j] = modules[i][j];
+                entrees2[i][j] = modules[i+15][j];
             }
         }
 
-        // Résultats attendus pour chaque bloc
-        final float[] resultats = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
 
-        // Création du neurone et apprentissage
-        final iNeurone Sinus = new NeuroneHeaviside(entrees[0].length);
+        // for(int i = 0; i < 30; i++){
+        //     for(int j=0 ; j < 512; j++){
+        //         System.out.println("Entree["+i+"]["+j+"]: "+ entrees1[i][j]);
+        //     }
+        // }
+
+
+        final float[] resultatsSin = {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // final float[] resultatsSin2 = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // final float[] resultatsSinH = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // final float[] resultatsCombinaison = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        final float[] resultatsCarre = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
+        final float[] resultatsBruit = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
+        //final float[][] resultats = {resultatsSin, resultatsSin2, resultatsSinH, resultatsCombinaison, resultatsCarre, resultatsBruit};
+        final float[][] resultats = {resultatsSin, resultatsCarre, resultatsBruit};
+
+        final iNeurone sinus = new NeuroneHeaviside(entrees1[0].length);
+        // final iNeurone sinus2 = new NeuroneHeaviside(entrees1[0].length);
+        // final iNeurone sinusH = new NeuroneHeaviside(entrees1[0].length);
+        // final iNeurone combinaison = new NeuroneHeaviside(entrees1[0].length);
+        final iNeurone carre = new NeuroneHeaviside(entrees1[0].length);
+        final iNeurone bruit = new NeuroneHeaviside(entrees1[0].length);
+        //final iNeurone[] neurones = {sinus, sinus2, sinusH, Combinaison, Carre, Bruit};
+        final iNeurone[] neurones = {sinus, carre, bruit};
+
+
 
         System.out.println("Apprentissage...");
-        System.out.println("Nombre de tours : "+Sinus.apprentissage(entrees, resultats));
+        for(int i = 0; i < 3; i++)
+            System.out.println("Nombre de tours du neurone " + ordre[i] + ": "+neurones[i].apprentissage(entrees1, resultats[i]));
 
-        // Affichage des synapses et du biais après apprentissage
-        final Neurone vueNeurone = (Neurone)Sinus;
-        System.out.print("Synapses : ");
-        for (final float f : vueNeurone.synapses())
-            System.out.print(f+" ");
-        System.out.print("\nBiais : ");
-        System.out.println(vueNeurone.biais());
 
-        // Affichage des sorties du neurone après apprentissage
-        for (int i = 0; i < entrees.length; ++i)
-        {
-            final float[] entree = entrees[i];
-            Sinus.metAJour(entree);
-            System.out.println("Sortie neurone"+i+" : "+Sinus.sortie());
+        Neurone vueNeurone;
+        for(int i = 0; i < 3; i++){
+            vueNeurone = (Neurone)neurones[i];
+            System.out.print("Synapses : ");
+            for (final float f : vueNeurone.synapses())
+                System.out.print(f+" ");
+
+            System.out.print("\nBiais : ");
+            System.out.println(vueNeurone.biais());
         }
 
-        // Ajout de bruit aux entrées pour tester la robustesse du neurone
-        float[][] bruit = new float[10][512];
-        final float Perturbation = 1000f;
-        for(int i = 0; i < 10; i++){
-            for(int j=0 ; j < 512 ; j++){
-                bruit[i][j] = Modules[i][j] + (float)Math.random()*Perturbation;
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < entrees2.length; j++){
+                final float[] entree = entrees2[j];
+                neurones[i].metAJour(entree);
+                System.out.println("Entree ("+ordre[i]+") "+j+" : "+neurones[i].sortie());
             }
         }
 
-        // Affichage des sorties du neurone pour les entrées bruitées
-        for (int i = 0; i < entrees.length; ++i)
-        {
-            final float[] entree = bruit[i];
-            Sinus.metAJour(entree);
-            System.out.println("Sortie neurone bruitée"+i+" : "+ Sinus.sortie());
+
+        float[][] bruits = new float[15][512];
+        final float perturbation = 10000.f;
+        for(int i = 0; i < modules.length; i++){
+            for(int j=0 ; j < 512 ; j++){
+                bruits[0][j] = modules[i][j] + (float)Math.random()*perturbation;
+            }
+        }
+
+
+        for(int i = 0; i < 3; i++){
+            for (int j = 0; j < entrees1.length; j++){
+                final float[] entree = bruits[j];
+                sinus.metAJour(entree);
+                System.out.println("Entree bruitée ("+ordre[i]+") "+j+" : "+ neurones[i].sortie());
+            }
         }
     }
 }
